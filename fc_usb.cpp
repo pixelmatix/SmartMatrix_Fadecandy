@@ -1,18 +1,18 @@
 /*
  * Fadecandy Firmware - USB Support
- * 
+ *
  * Copyright (c) 2013 Micah Elizabeth Scott
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -33,6 +33,7 @@
 #define TYPE_FRAMEBUFFER    0x00
 #define TYPE_LUT            0x40
 #define TYPE_CONFIG         0x80
+#define TYPE_EXPAND         0xC0
 
 
 void fcBuffers::finalizeFrame()
@@ -82,6 +83,7 @@ bool fcBuffers::handleUSB(usb_packet_t *packet)
                 return false;
             }
 
+            index += packetIndexHigh;
             fbNew->store(index, packet);
             if (final) {
                 pendingFinalizeFrame = true;
@@ -101,6 +103,12 @@ bool fcBuffers::handleUSB(usb_packet_t *packet)
         case TYPE_CONFIG:
             // Config changes take effect immediately.
             flags = packet->buf[1];
+            usb_free(packet);
+            break;
+
+        case TYPE_EXPAND:
+            // load high bits of packet index to support packet indexes > 5 bits long
+            packetIndexHigh = packet->buf[1];
             usb_free(packet);
             break;
 

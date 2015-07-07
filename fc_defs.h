@@ -27,8 +27,8 @@
 
 #pragma once
 
-#define LEDS_PER_STRIP          64
-#define LEDS_TOTAL              (LEDS_PER_STRIP * 8)
+#define LEDS_PER_STRIP          32
+#define LEDS_TOTAL              (LEDS_PER_STRIP * 32)
 #define CHANNELS_TOTAL          (LEDS_TOTAL * 3)
 
 #define LUT_CH_SIZE             257
@@ -37,10 +37,10 @@
 // USB packet layout
 #define PIXELS_PER_PACKET       21
 #define LUTENTRIES_PER_PACKET   31
-#define PACKETS_PER_FRAME       25
+#define PACKETS_PER_FRAME       49
 #define PACKETS_PER_LUT         25
 
-#define NUM_USB_BUFFERS         104       // Three full frames (3*25), one LUT buffer (25), a little extra (4)
+#define NUM_USB_BUFFERS         ((3*PACKETS_PER_FRAME) + PACKETS_PER_LUT + 4)       // Three full frames, one LUT buffer, a little extra (4)
 
 #define VENDOR_ID               0x1d50    // OpenMoko
 #define PRODUCT_ID              0x60bf    // Assigned to Pixelmatix Aurora project
