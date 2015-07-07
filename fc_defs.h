@@ -43,6 +43,6 @@
 #define NUM_USB_BUFFERS         ((3*PACKETS_PER_FRAME) + PACKETS_PER_LUT + 4)       // Three full frames, one LUT buffer, a little extra (4)
 
 #define VENDOR_ID               0x1d50    // OpenMoko
-#define PRODUCT_ID              0x607a    // Assigned to Fadecandy project
+#define PRODUCT_ID              0x60bf    // Assigned to Pixelmatix Aurora project
 #define DEVICE_VER              0x0107	  // BCD device version
 #define DEVICE_VER_STRING		"1.07"
