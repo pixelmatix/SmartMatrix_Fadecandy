@@ -23,6 +23,7 @@
  */
 
 // Requires SmartMatrix 3.0 branch
+// Compile with Teensy USB Type: "No USB"
 
 // There are issues compiling, if you see "undefined reference" and "error: ld return 1", wait a few seconds then try compiling again
 // the order of #includes is very sensitive, including <SmartMatrix.h> before "Layer_Fadecandy.h" will break things for example
