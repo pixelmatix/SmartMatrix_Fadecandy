@@ -33,8 +33,15 @@
 
 static fcBuffers buffers;
 fcLinearLUT fcBuffers::lutCurrent;
-SmartMatrix matrix;
-SMLayerForeground foregroundLayer;
+
+const uint8_t kMatrixHeight = 32;       // known working: 16, 32
+const uint8_t kMatrixWidth = 32;        // known working: 32
+const uint8_t kColorDepth = 36;         // known working: 36
+const uint8_t kDmaBufferRows = 4;       // known working: 4
+
+SMARTMATRIX_ALLOCATE_BUFFERS(kMatrixWidth, kMatrixHeight, kColorDepth, kDmaBufferRows);
+SMARTMATRIX_ALLOCATE_FOREGROUND_LAYER(foregroundLayer, kMatrixWidth, kMatrixHeight);
+
 SMLayerFadecandy fadecandyLayer(&buffers);
 
 extern "C" int usb_rx_handler(usb_packet_t *packet)
