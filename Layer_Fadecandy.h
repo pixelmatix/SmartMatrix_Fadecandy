@@ -1,9 +1,9 @@
 #ifndef _LAYER_FADECANDY_H_
 #define _LAYER_FADECANDY_H_
 
-#include "fc_usb.h"
 #include <Layer.h>
-#include "MatrixCommon.h"
+#include <MatrixCommon.h>
+#include "fc_usb.h"
 
 class SMLayerFadecandy : public SM_Layer {
     public:
