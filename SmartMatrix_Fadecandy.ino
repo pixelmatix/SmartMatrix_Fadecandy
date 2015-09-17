@@ -26,23 +26,27 @@
 // Compile with Teensy USB Type: "No USB"
 
 // There are issues compiling, if you see "undefined reference" and "error: ld return 1", wait a few seconds then try compiling again
-// the order of #includes is very sensitive, including <SmartMatrix.h> before "Layer_Fadecandy.h" will break things for example
+// the order of #includes is very sensitive, including <SmartMatrix3.h> before "Layer_Fadecandy.h" will break things for example
 
 #include "Layer_Fadecandy.h"
-#include <SmartMatrix.h>
+#include <SmartMatrix3.h>
 
 static fcBuffers buffers;
 fcLinearLUT fcBuffers::lutCurrent;
 
-const uint8_t kMatrixHeight = 32;       // known working: 16, 32
-const uint8_t kMatrixWidth = 32;        // known working: 32
-const uint8_t kColorDepth = 36;         // known working: 36
-const uint8_t kDmaBufferRows = 4;       // known working: 4
+#define COLOR_DEPTH 24                  // This sketch and FastLED uses type `rgb24` directly, COLOR_DEPTH must be 24
+const uint8_t kMatrixWidth = 32;        // known working: 32, 64, 96, 128
+const uint8_t kMatrixHeight = 32;       // known working: 16, 32, 48, 64
+const uint8_t kRefreshDepth = 36;       // known working: 24, 36, 48
+const uint8_t kDmaBufferRows = 4;       // known working: 2-4, use 2 to save memory, more to keep from dropping frames and automatically lowering refresh rate
+const uint8_t kPanelType = SMARTMATRIX_HUB75_32ROW_MOD16SCAN;   // use SMARTMATRIX_HUB75_16ROW_MOD8SCAN for common 16x32 panels
+const uint8_t kMatrixOptions = (SMARTMATRIX_OPTIONS_NONE);      // see http://docs.pixelmatix.com/SmartMatrix for options
+const uint8_t kScrollingLayerOptions = (SM_SCROLLING_OPTIONS_NONE);
 
-SMARTMATRIX_ALLOCATE_BUFFERS(kMatrixWidth, kMatrixHeight, kColorDepth, kDmaBufferRows);
-SMARTMATRIX_ALLOCATE_FOREGROUND_LAYER(foregroundLayer, kMatrixWidth, kMatrixHeight);
+SMARTMATRIX_ALLOCATE_BUFFERS(matrix, kMatrixWidth, kMatrixHeight, kRefreshDepth, kDmaBufferRows, kPanelType, kMatrixOptions);
+SMARTMATRIX_ALLOCATE_SCROLLING_LAYER(scrollingLayer, kMatrixWidth, kMatrixHeight, COLOR_DEPTH, kScrollingLayerOptions);
 
-SMLayerFadecandy fadecandyLayer(&buffers);
+SMLayerFadecandy fadecandyLayer(&buffers, kMatrixWidth, kMatrixHeight);
 
 extern "C" int usb_rx_handler(usb_packet_t *packet)
 {
@@ -52,9 +56,9 @@ extern "C" int usb_rx_handler(usb_packet_t *packet)
 
 void setup() {
     matrix.addLayer(&fadecandyLayer);
-    matrix.addLayer(&foregroundLayer);
+    matrix.addLayer(&scrollingLayer);
     matrix.begin();
-    foregroundLayer.scrollText("fadecandy",1);
+    scrollingLayer.start("fadecandy",1);
 }
 
 void loop() {

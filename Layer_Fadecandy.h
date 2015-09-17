@@ -7,10 +7,10 @@
 
 class SMLayerFadecandy : public SM_Layer {
     public:
-        SMLayerFadecandy(fcBuffers * newfcbuffers);
+        SMLayerFadecandy(fcBuffers * newfcbuffers, uint8_t width, uint8_t height);
         void frameRefreshCallback();
-        void getRefreshPixel(uint8_t x, uint8_t y, rgb24 &refreshPixel);
-        void getRefreshPixel(uint8_t x, uint8_t y, rgb48 &refreshPixel);
+        void fillRefreshRow(uint8_t hardwareY, rgb48 refreshRow[]);
+        void fillRefreshRow(uint8_t hardwareY, rgb24 refreshRow[]);
 
     private:
         inline uint32_t calculateFcInterpCoefficient();

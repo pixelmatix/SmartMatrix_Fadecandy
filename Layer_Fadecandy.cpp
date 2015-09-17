@@ -2,8 +2,10 @@
 #include <algorithm>
 #include "arm_math.h"
 
-SMLayerFadecandy::SMLayerFadecandy(fcBuffers * newfcbuffers) {
+SMLayerFadecandy::SMLayerFadecandy(fcBuffers * newfcbuffers, uint8_t width, uint8_t height) {
     fcbuffers = newfcbuffers;
+    this->matrixWidth = width;
+    this->matrixHeight = height;    
 }
 
 inline uint32_t SMLayerFadecandy::calculateFcInterpCoefficient()
@@ -102,30 +104,35 @@ uint32_t lutInterpolate(const uint16_t *lut, uint32_t arg)
     return __SMUADX(pairAlpha, pair) >> 7;
 }
 
-void SMLayerFadecandy::getRefreshPixel(uint8_t hardwareX, uint8_t hardwareY, rgb48 &xyPixel) {
+void SMLayerFadecandy::fillRefreshRow(uint8_t hardwareY, rgb48 refreshRow[]) {
     const uint8_t *pixelPrev, *pixelNext;
+    int i;
 
-    pixelPrev = fcbuffers->fbPrev->pixel(hardwareX + LEDS_PER_STRIP * hardwareY);
-    pixelNext = fcbuffers->fbNext->pixel(hardwareX + LEDS_PER_STRIP * hardwareY);
+    for(i=0; i<this->matrixWidth; i++) {
+        pixelPrev = fcbuffers->fbPrev->pixel(i + LEDS_PER_STRIP * hardwareY);
+        pixelNext = fcbuffers->fbNext->pixel(i + LEDS_PER_STRIP * hardwareY);
 
-    xyPixel.red = lutInterpolate(fcbuffers->lutCurrent.r,((pixelPrev[0] * icPrev + pixelNext[0] * icNext) >> 16));
-    xyPixel.green = lutInterpolate(fcbuffers->lutCurrent.g,((pixelPrev[1] * icPrev + pixelNext[1] * icNext) >> 16));
-    xyPixel.blue = lutInterpolate(fcbuffers->lutCurrent.b,((pixelPrev[2] * icPrev + pixelNext[2] * icNext) >> 16));
+        refreshRow[i].red = lutInterpolate(fcbuffers->lutCurrent.r,((pixelPrev[0] * icPrev + pixelNext[0] * icNext) >> 16));
+        refreshRow[i].green = lutInterpolate(fcbuffers->lutCurrent.g,((pixelPrev[1] * icPrev + pixelNext[1] * icNext) >> 16));
+        refreshRow[i].blue = lutInterpolate(fcbuffers->lutCurrent.b,((pixelPrev[2] * icPrev + pixelNext[2] * icNext) >> 16));
 
-    if(fcbuffers->flags & CFLAG_NO_DITHERING) {
-        xyPixel.red &= 0xff00;
-        xyPixel.green &= 0xff00;
-        xyPixel.blue &= 0xff00;
+        if(fcbuffers->flags & CFLAG_NO_DITHERING) {
+            refreshRow[i].red &= 0xff00;
+            refreshRow[i].green &= 0xff00;
+            refreshRow[i].blue &= 0xff00;
 
-        if(hardwareX == 0 && hardwareY == 0) {
-            xyPixel.red = xyPixel.green = xyPixel.blue = 0xffff;
+            // give a visual signal we're in CFLAG_NO_DITHERING (24-bit color) mode
+            if(i == 0 && hardwareY == 0) {
+                refreshRow[i].red = refreshRow[i].green = refreshRow[i].blue = 0xffff;
+            }
         }
     }
 }
 
-void SMLayerFadecandy::getRefreshPixel(uint8_t hardwareX, uint8_t hardwareY, rgb24 &xyPixel) {
-  // no support for 24-bit color yet
-  xyPixel.green = 0xff;
+
+
+void SMLayerFadecandy::fillRefreshRow(uint8_t hardwareY, rgb24 refreshRow[]) {
+  // no support for 24-bit refreshDepth
 }
 
 
