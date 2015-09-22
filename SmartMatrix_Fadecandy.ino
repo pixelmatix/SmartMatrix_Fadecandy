@@ -22,10 +22,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Requires SmartMatrix 3.0 branch
-// Compile with Teensy USB Type: "No USB"
-
-// There are issues compiling, if you see "undefined reference" and "error: ld return 1", wait a few seconds then try compiling again
+// Requires SmartMatrix 3.0
+// Compile with Teensy USB Type: "No USB" - error "multiple definition of `usb_isr'" means you forgot to set USB Type to "No USB"
 
 #include <SmartMatrix3.h>
 #include "Layer_Fadecandy.h"
