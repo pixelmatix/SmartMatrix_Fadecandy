@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "arm_math.h"
 
-SMLayerFadecandy::SMLayerFadecandy(fcBuffers * newfcbuffers, uint8_t width, uint8_t height) {
+SMLayerFadecandy::SMLayerFadecandy(fcBuffers * newfcbuffers, uint16_t width, uint16_t height) {
     fcbuffers = newfcbuffers;
     this->matrixWidth = width;
     this->matrixHeight = height;    
@@ -104,7 +104,7 @@ uint32_t lutInterpolate(const uint16_t *lut, uint32_t arg)
     return __SMUADX(pairAlpha, pair) >> 7;
 }
 
-void SMLayerFadecandy::fillRefreshRow(uint8_t hardwareY, rgb48 refreshRow[]) {
+void SMLayerFadecandy::fillRefreshRow(uint16_t hardwareY, rgb48 refreshRow[]) {
     const uint8_t *pixelPrev, *pixelNext;
     int i;
 
@@ -131,7 +131,7 @@ void SMLayerFadecandy::fillRefreshRow(uint8_t hardwareY, rgb48 refreshRow[]) {
 
 
 
-void SMLayerFadecandy::fillRefreshRow(uint8_t hardwareY, rgb24 refreshRow[]) {
+void SMLayerFadecandy::fillRefreshRow(uint16_t hardwareY, rgb24 refreshRow[]) {
   // no support for 24-bit refreshDepth
 }
 
