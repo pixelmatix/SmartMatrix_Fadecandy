@@ -27,7 +27,7 @@
 
 #pragma once
 
-#define FRAME_WIDTH             64
+#define FRAME_WIDTH             32
 #define FRAME_HEIGHT            32
 #define LEDS_TOTAL              (FRAME_WIDTH * FRAME_HEIGHT)
 
