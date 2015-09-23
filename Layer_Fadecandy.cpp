@@ -109,8 +109,8 @@ void SMLayerFadecandy::fillRefreshRow(uint16_t hardwareY, rgb48 refreshRow[]) {
     int i;
 
     for(i=0; i<this->matrixWidth; i++) {
-        pixelPrev = fcbuffers->fbPrev->pixel(i + LEDS_PER_STRIP * hardwareY);
-        pixelNext = fcbuffers->fbNext->pixel(i + LEDS_PER_STRIP * hardwareY);
+        pixelPrev = fcbuffers->fbPrev->pixel(i + FRAME_WIDTH * hardwareY);
+        pixelNext = fcbuffers->fbNext->pixel(i + FRAME_WIDTH * hardwareY);
 
         refreshRow[i].red = lutInterpolate(fcbuffers->lutCurrent.r,((pixelPrev[0] * icPrev + pixelNext[0] * icNext) >> 16));
         refreshRow[i].green = lutInterpolate(fcbuffers->lutCurrent.g,((pixelPrev[1] * icPrev + pixelNext[1] * icNext) >> 16));
