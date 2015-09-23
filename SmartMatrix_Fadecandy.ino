@@ -63,12 +63,4 @@ void setup() {
 }
 
 void loop() {
-    // load a single row into the refresh buffer
-    //matrix.matrixCalculations();
-
-    // We can switch to the next frame's buffer now.
-    buffers.finalizeFrame();
-
-    // Performance counter, for monitoring frame rate externally
-    perf_frameCounter++;
 }

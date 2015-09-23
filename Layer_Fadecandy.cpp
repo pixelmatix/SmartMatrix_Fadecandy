@@ -44,6 +44,12 @@ uint32_t icPrev;
 uint32_t icNext;
 
 void SMLayerFadecandy::frameRefreshCallback(void) {
+    // We can switch to the next frame's buffer now.
+    fcbuffers->finalizeFrame();
+
+    // Performance counter, for monitoring frame rate externally
+    perf_frameCounter++;
+
     fcCoefficient = calculateFcInterpCoefficient();
     icPrev = 257 * (0x10000 - fcCoefficient);
     icNext = 257 * fcCoefficient;
