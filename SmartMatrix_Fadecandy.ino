@@ -22,8 +22,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Requires SmartMatrix 3.0
+// Requires SmartMatrix Library 3.0
 // Compile with Teensy USB Type: "No USB" - error "multiple definition of `usb_isr'" means you forgot to set USB Type to "No USB"
+// adjust FRAME_WIDTH and FRAME_HEIGHT in fc_defs.h to match kMatrixWidth/Height
+// If green artifacts are seen, adjust NUM_USB_BUFFERS in fc_defs.h
 
 #include <SmartMatrix3.h>
 #include "Layer_Fadecandy.h"
@@ -31,7 +33,7 @@
 static fcBuffers buffers;
 fcLinearLUT fcBuffers::lutCurrent;
 
-#define COLOR_DEPTH 24                  // This sketch and FastLED uses type `rgb24` directly, COLOR_DEPTH must be 24
+#define COLOR_DEPTH 24                  // In this sketch, COLOR_DEPTH only applies to scrollingLayer
 const uint8_t kMatrixWidth = 32;        // known working: 32, 64, 96, 128
 const uint8_t kMatrixHeight = 32;       // known working: 16, 32, 48, 64
 const uint8_t kRefreshDepth = 36;       // known working: 24, 36, 48
@@ -55,6 +57,8 @@ void setup() {
     matrix.addLayer(&fadecandyLayer);
     matrix.addLayer(&scrollingLayer);
     matrix.begin();
+
+    // print something so we aren't just greeted with a blank screen on start
     scrollingLayer.start("fadecandy",1);
 }
 
