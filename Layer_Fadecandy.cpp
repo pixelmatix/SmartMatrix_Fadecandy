@@ -110,7 +110,7 @@ uint32_t lutInterpolate(const uint16_t *lut, uint32_t arg)
     return __SMUADX(pairAlpha, pair) >> 7;
 }
 
-void SMLayerFadecandy::fillRefreshRow(uint16_t hardwareY, rgb48 refreshRow[]) {
+void SMLayerFadecandy::fillRefreshRow(uint16_t hardwareY, rgb48 refreshRow[], int brightnessShifts) {
     const uint8_t *pixelPrev, *pixelNext;
     int i;
 
@@ -137,7 +137,7 @@ void SMLayerFadecandy::fillRefreshRow(uint16_t hardwareY, rgb48 refreshRow[]) {
 
 
 
-void SMLayerFadecandy::fillRefreshRow(uint16_t hardwareY, rgb24 refreshRow[]) {
+void SMLayerFadecandy::fillRefreshRow(uint16_t hardwareY, rgb24 refreshRow[], int brightnessShifts) {
   // no support for 24-bit refreshDepth
 }
 

@@ -22,12 +22,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Requires SmartMatrix Library 3.0
+// Requires SmartMatrix Library 4.0
 // Compile with Teensy USB Type: "No USB" - error "multiple definition of `usb_isr'" means you forgot to set USB Type to "No USB"
 // adjust FRAME_WIDTH and FRAME_HEIGHT in fc_defs.h to match kMatrixWidth/Height
 // If green artifacts are seen, adjust NUM_USB_BUFFERS in fc_defs.h
 
-#include <SmartMatrix3.h>
+#include <MatrixHardware_Teensy3_ShieldV4.h>        // SmartLED Shield for Teensy 3 (V4)
+//#include <MatrixHardware_Teensy3_ShieldV1toV3.h>    // SmartMatrix Shield for Teensy 3 V1-V3
+#include <SmartMatrix.h>
 #include "Layer_Fadecandy.h"
 
 static fcBuffers buffers;
