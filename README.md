@@ -1,4 +1,8 @@
-This port of Fadecandy firmware is compatible with the Arduino SmartMatrix 3 Library
+This port of Fadecandy firmware is compatible with the Arduino SmartMatrix 4.0 Library, and Teensy 3.1/3.2
+
+Teensy 3.5/3.6 isn't supported
+
+For Teensy 4.0/4.1, use: https://github.com/pixelmatix/Fadecandy_Teensy4
 
 Run in combination with the modified Fadecandy server found here:  
 https://github.com/pixelmatix/fadecandy/
